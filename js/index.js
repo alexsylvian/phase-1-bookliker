@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <h4>${bookData.subtitle}</h4>
                         <h4>${bookData.author}</h4>
                         <div>${bookData.description}</div>
-                        <ul>${userList}</ul>
+                        <ul id='like-list'>${userList}</ul>
                         `
 
                         const likeButton = document.createElement('button')
@@ -33,6 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                         likeButton.addEventListener('click', () => {
                             const currentUser = {"id": 1, "username": "pouros"}
+                            const userExists = bookData.users.some(user => user.id === currentUser.id);
+
+                            if (!userExists){
                             bookData.users.push(currentUser)
                             fetch(`http://localhost:3000/books/${book.id}`, {
                                 method: 'PATCH',
@@ -46,6 +49,16 @@ document.addEventListener('DOMContentLoaded', () => {
                                     const updatedLikeList = newBookData.users.map(user => `<li>${user.username}</li>`).join('');
                                     bookPanel.querySelector('ul').innerHTML = updatedLikeList
                             })
+                        }else{
+                            console.log('nope')
+                        }
+                        })
+
+                        likeButton.addEventListener('click', () => {
+                            const likeList = document.getElementById('like-list')
+                            if (likeList){
+                                console.log('like?')
+                            }
                         })
                     })
                 })
