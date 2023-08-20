@@ -26,6 +26,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div>${bookData.description}</div>
                         <ul>${userList}</ul>
                         `
+
+                        const likeButton = document.createElement('button')
+                        likeButton.textContent = 'LIKE'
+                        bookPanel.appendChild(likeButton)
                     })
                 })
             })
@@ -33,4 +37,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     renderList()
+
 })
