@@ -30,6 +30,23 @@ document.addEventListener('DOMContentLoaded', () => {
                         const likeButton = document.createElement('button')
                         likeButton.textContent = 'LIKE'
                         bookPanel.appendChild(likeButton)
+
+                        likeButton.addEventListener('click', () => {
+                            const currentUser = {"id": 1, "username": "pouros"}
+                            bookData.users.push(currentUser)
+                            fetch(`http://localhost:3000/books/${book.id}`, {
+                                method: 'PATCH',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ users: bookData.users })
+                                })
+                                .then(res => res.json())
+                                .then(newBookData => {
+                                    const updatedLikeList = newBookData.users.map(user => `<li>${user.username}</li>`).join('');
+                                    bookPanel.querySelector('ul').innerHTML = updatedLikeList
+                            })
+                        })
                     })
                 })
             })
