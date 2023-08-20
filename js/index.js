@@ -37,28 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
                             if (!userExists){
                             bookData.users.push(currentUser)
-                            fetch(`http://localhost:3000/books/${book.id}`, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({ users: bookData.users })
-                                })
-                                .then(res => res.json())
-                                .then(newBookData => {
-                                    const updatedLikeList = newBookData.users.map(user => `<li>${user.username}</li>`).join('');
-                                    bookPanel.querySelector('ul').innerHTML = updatedLikeList
-                            })
-                        }else{
-                            console.log('nope')
-                        }
-                        })
-
-                        likeButton.addEventListener('click', () => {
-                            const likeList = document.getElementById('like-list')
-                            if (likeList){
-                                console.log('like?')
+                            }else{
+                                const userIndex = bookData.users.findIndex(user => user.id === currentUser.id);
+                                        if (userIndex !== -1) {
+                                            bookData.users.splice(userIndex, 1);
+                                        }
                             }
+
+                            fetch(`http://localhost:3000/books/${book.id}`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'Content-Type': 'application/json'
+                                        },
+                                        body: JSON.stringify({ users: bookData.users })
+                                    })
+                                    .then(res => res.json())
+                                    .then(newBookData => {
+                                        const updatedLikeList = newBookData.users.map(user => `<li>${user.username}</li>`).join('');
+                                        bookPanel.querySelector('#like-list').innerHTML = updatedLikeList;
+                                    });
                         })
                     })
                 })
